@@ -1,2 +1,5 @@
-requests
-flask
+Fabric==1.12.0
+Flask==0.11.1
+Jinja2==2.8
+awscli==1.10.65
+requests==2.11.1

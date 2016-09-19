@@ -1,5 +1,6 @@
 # security-cam
-A home security camera management system.
+* A home security camera management system.
+* Receive image data through API POST endpoint and store images in twitter through twitter API.
 
 Running With Docker
 ==================

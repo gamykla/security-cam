@@ -1,3 +1,5 @@
+import json
+import os
 from fabric.api import task, local
 
 DOCKER_REPOSITORY = "jelis/cam_server"
@@ -11,7 +13,27 @@ def build():
 
 @task
 def run():
-    local('docker run -d -p 8080:8080 --name={} {}'.format(TEST_CONTAINER_NAME, DOCKER_REPOSITORY))
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    twitter_creds_file = os.path.join(current_dir, "twitter_credentials.json")
+    with open(twitter_creds_file, "r") as f:
+        creds_json = json.loads(f.read())
+
+    docker_run_cmd = ('docker run -d '
+                      '-e TWITTER_CONSUMER_KEY={} '
+                      '-e TWITTER_CONSUMER_SECRET={} '
+                      '-e TWITTER_ACCESS_TOKEN_KEY={} '
+                      '-e TWITTER_ACCESS_TOKEN_SECRET={} '
+                      '-p 8080:8080 --name={} {}')
+
+    docker_run_cmd = docker_run_cmd.format(
+        creds_json['consumer_key'],
+        creds_json['consumer_secret'],
+        creds_json['access_token_key'],
+        creds_json['access_token_secret'],
+        TEST_CONTAINER_NAME,
+        DOCKER_REPOSITORY)
+
+    local(docker_run_cmd)
 
 
 @task

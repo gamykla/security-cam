@@ -2,3 +2,5 @@ test/resources
 *.pyc
 .idea
 todo.txt
+test.py
+twitter_credentials.json

@@ -7,8 +7,9 @@ RUN apk add --no-cache python && \
 rm -r /root/.cache
 
 ADD requirements requirements
-ADD security_cam security_cam
 RUN pip install -r requirements/base.txt
+
+ADD security_cam security_cam
 
 EXPOSE 8080
 

@@ -15,5 +15,5 @@ class TwitterImageStore(object):
         image_data - Byte array of image data
         """
         logger.debug("Saving image in twitter.")
-        response = self.api.request('statuses/update_with_media', {'status': 'This is a test'}, {'media[]': image_data})
+        response = self.api.request('statuses/update_with_media', {'status': 'Capture.'}, {'media[]': image_data})
         logger.debug("Twitter response, status_code={} text={}".format(response.status_code, response.text))

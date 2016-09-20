@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from fabric.api import task, local
 
 DOCKER_REPOSITORY = "jelis/cam_server"
@@ -37,16 +38,26 @@ def run():
 
 
 @task
-def stop():
+def stop(remove_container=True):
     container_id = local('docker ps --filter "name={}" -aq'.format(TEST_CONTAINER_NAME), capture=True)
     local('docker stop {}'.format(container_id))
-    local('docker rm {}'.format(container_id))
+    if remove_container:
+        local('docker rm {}'.format(container_id))
+    return container_id
 
 
 @task
 def test():
     run()
+    errors = False
     try:
+        time.sleep(1)  # ghetto wait for container
         local('nosetests tests/')
+    except:
+        errors = True
+        raise
     finally:
-        stop()
+        its_ok_to_remove_container = not errors
+        container_id = stop(its_ok_to_remove_container)
+        if errors:
+            local('docker logs {}'.format(container_id))

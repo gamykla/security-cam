@@ -2,12 +2,15 @@ import base64
 import httplib
 import logging
 import sys
+import json
 
 from flask import Flask
 from flask import request
 
 import configuration
 import twitter_handler
+from authentication import authorization_required
+
 
 root = logging.getLogger()
 root.setLevel(logging.DEBUG)
@@ -31,6 +34,7 @@ img_store = twitter_handler.TwitterImageStore(
 
 
 @app.route("/captures/", methods=['POST'])
+@authorization_required
 def handle_image_capture():
     """Create an image capture."""
     logger.debug("Handling image capture request.")
@@ -41,7 +45,7 @@ def handle_image_capture():
         image_bytes = base64.decodestring(image_data_base64)
         img_store.save_image(image_bytes)
 
-        return '{"response": "ok"}', httplib.CREATED, {}
+        return json.dumps({"status": "ok"}), httplib.CREATED, {}
     except:
         logger.exception("An error has occured.")
         return '{"response": "Internal error."}', httplib.INTERNAL_SERVER_ERROR, {}

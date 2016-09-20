@@ -3,4 +3,4 @@ test/resources
 .idea
 todo.txt
 test.py
-twitter_credentials.json
+secrets.json

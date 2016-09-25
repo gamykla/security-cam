@@ -34,7 +34,6 @@ img_store = twitter_handler.TwitterImageStore(
 
 
 @app.route("/health/", methods=['GET'])
-@authorization_required
 def health_check():
     return '{"status": "OK"}', httplib.OK, {}
 

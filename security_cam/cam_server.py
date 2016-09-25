@@ -13,9 +13,9 @@ from authentication import authorization_required
 
 
 root = logging.getLogger()
-root.setLevel(logging.DEBUG)
+root.setLevel(logging.INFO)
 stream_handler = logging.StreamHandler(sys.stdout)
-stream_handler.setLevel(logging.DEBUG)
+stream_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 stream_handler.setFormatter(formatter)
 root.addHandler(stream_handler)
@@ -31,6 +31,12 @@ img_store = twitter_handler.TwitterImageStore(
     config.get_value("TWITTER_CONSUMER_SECRET"),
     config.get_value("TWITTER_ACCESS_TOKEN_KEY"),
     config.get_value("TWITTER_ACCESS_TOKEN_SECRET"))
+
+
+@app.route("/health/", methods=['GET'])
+@authorization_required
+def health_check():
+    return '{"status": "OK"}', httplib.OK, {}
 
 
 @app.route("/captures/", methods=['POST'])

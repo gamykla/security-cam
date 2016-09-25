@@ -13,6 +13,11 @@ def build():
 
 
 @task
+def push():
+    local('docker push {}'.format(DOCKER_REPOSITORY))
+
+
+@task
 def run():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     secrets_file = os.path.join(current_dir, "secrets.json")

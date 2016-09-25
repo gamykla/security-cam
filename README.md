@@ -5,11 +5,4 @@
 Running With Docker
 ==================
 * repository = https://hub.docker.com/r/jelis/cam_server/
-* docker run -d -e TWITTER_CONSUMER_KEY=a -e TWITTER_CONSUMER_SECRET=b -e TWITTER_ACCESS_TOKEN_KEY=c -e TWITTER_ACCESS_TOKEN_SECRET=d jelis/cam_server
-
-Notes
-=====
-- curl -v -X POST -d '{"a": 1}' -H 'Content-Type: application/json' localhost:8080/captures/
-- docker build -t security_cam .
-
-
+* docker run -d -p 8080:80 -e TWITTER_CONSUMER_KEY=A -e TWITTER_CONSUMER_SECRET=B -e TWITTER_ACCESS_TOKEN_KEY=C -e TWITTER_ACCESS_TOKEN_SECRET=D -e CLIENT_KEY=E -e CLIENT_SECRET=F jelis/cam_server

@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: camserver-deployment
+spec:
+  replicas: 4 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      # unlike pod-nginx.yaml, the name is not included in the meta data as a unique name is
+      # generated from the deployment name
+      labels:
+        app: cam-server
+    spec:
+      containers:
+      - name: cam-server
+        image: jelis/cam_server
+        # TODO - factor the env values out of the yaml template
+        env:
+        - name: TWITTER_CONSUMER_KEY
+          value: TODO
+        - name: TWITTER_CONSUMER_SECRET
+          value: TODO 
+        - name: TWITTER_ACCESS_TOKEN_KEY
+          value: TODO
+        - name: TWITTER_ACCESS_TOKEN_SECRET
+          value: TODO
+        - name: CLIENT_KEY
+          value: TODO
+        - name: CLIENT_SECRET
+          value:  TODO
+        livenessProbe:
+          httpGet:
+            path: /health/
+            port: 8080
+          # length of time to wait for a pod to initialize
+          # after pod startup, before applying health checking
+          initialDelaySeconds: 20
+          timeoutSeconds: 1
+        ports:
+        - containerPort: 8080

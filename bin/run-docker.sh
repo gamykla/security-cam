@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo docker pull jelis/cam_server
+
+sudo docker run -d -p 80:8080 -e TWITTER_CONSUMER_KEY=TODO -e TWITTER_CONSUMER_SECRET=TODO -e TWITTER_ACCESS_TOKEN_KEY=TODO -e TWITTER_ACCESS_TOKEN_SECRET=TODO -e CLIENT_KEY=TODO -e CLIENT_SECRET=TODO jelis/cam_server
+

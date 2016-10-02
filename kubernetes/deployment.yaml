@@ -35,6 +35,6 @@ spec:
           # length of time to wait for a pod to initialize
           # after pod startup, before applying health checking
           initialDelaySeconds: 20
-          timeoutSeconds: 1
+          timeoutSeconds: 30
         ports:
         - containerPort: 8080

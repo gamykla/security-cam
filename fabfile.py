@@ -7,14 +7,22 @@ DOCKER_REPOSITORY = "jelis/cam_server"
 TEST_CONTAINER_NAME = "cam_server"
 
 
+def _get_branch():
+    return local('git rev-parse --abbrev-ref HEAD', capture=True)
+
+
+def _get_image_name():
+    return "{}:{}".format(DOCKER_REPOSITORY, _get_branch())
+
+
 @task
 def build():
-    local('docker build -t {} .'.format(DOCKER_REPOSITORY))
+    local('docker build -t {} .'.format(_get_image_name()))
 
 
 @task
 def push():
-    local('docker push {}'.format(DOCKER_REPOSITORY))
+    local('docker push {}'.format(_get_image_name()))
 
 
 @task

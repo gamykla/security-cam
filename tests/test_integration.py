@@ -13,6 +13,12 @@ def _get_secrets():
         return json.loads(f.read())
 
 
+def test_health_endpoint():
+    for _ in range(500):
+        response = requests.get("http://localhost:8080/health/")
+        eq_(httplib.OK, response.status_code)
+
+
 def test_image_capture():
     secrets = _get_secrets()
 

@@ -26,11 +26,14 @@ app = Flask(__name__)
 
 config = configuration.Configuration()
 
-img_store = twitter_handler.TwitterImageStore(
-    config.get_value("TWITTER_CONSUMER_KEY"),
-    config.get_value("TWITTER_CONSUMER_SECRET"),
-    config.get_value("TWITTER_ACCESS_TOKEN_KEY"),
-    config.get_value("TWITTER_ACCESS_TOKEN_SECRET"))
+try:
+    img_store = twitter_handler.TwitterImageStore(
+        config.get_value("TWITTER_CONSUMER_KEY"),
+        config.get_value("TWITTER_CONSUMER_SECRET"),
+        config.get_value("TWITTER_ACCESS_TOKEN_KEY"),
+        config.get_value("TWITTER_ACCESS_TOKEN_SECRET"))
+except:
+    logger.exception("An error occurec creating twitter handler.")
 
 
 @app.route("/health/", methods=['GET'])

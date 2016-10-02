@@ -13,4 +13,4 @@ ADD security_cam security_cam
 
 EXPOSE 8080
 
-ENTRYPOINT python /security_cam/cam_server.py
+ENTRYPOINT gunicorn --bind 0.0.0.0:8080 security_cam.wsgi:app

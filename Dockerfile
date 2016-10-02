@@ -13,4 +13,4 @@ ADD security_cam security_cam
 
 EXPOSE 8080
 
-ENTRYPOINT gunicorn --bind 0.0.0.0:8080 security_cam.wsgi:app
+ENTRYPOINT gunicorn --bind 0.0.0.0:8080 --workers 3 --timeout 120 security_cam.wsgi:app

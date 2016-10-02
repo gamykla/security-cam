@@ -37,7 +37,7 @@ def run():
     docker_run_cmd = 'docker run -d {} -p 8080:8080 --name={} {}'.format(
         env_vars,
         TEST_CONTAINER_NAME,
-        DOCKER_REPOSITORY)
+        _get_image_name())
 
     local(docker_run_cmd)
 

@@ -13,14 +13,16 @@ from authentication import authorization_required
 
 
 root = logging.getLogger()
-root.setLevel(logging.INFO)
+root.setLevel(logging.DEBUG)
+
 stream_handler = logging.StreamHandler(sys.stdout)
-stream_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 stream_handler.setFormatter(formatter)
+
 root.addHandler(stream_handler)
 
 logger = logging.getLogger(__name__)
+
 app = Flask(__name__)
 
 
@@ -38,6 +40,7 @@ except:
 
 @app.route("/health/", methods=['GET'])
 def health_check():
+    logger.debug("Health check endpoint.")
     return '{"status": "OK"}', httplib.OK, {}
 
 

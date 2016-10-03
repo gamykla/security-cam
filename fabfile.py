@@ -12,7 +12,11 @@ def _get_branch():
 
 
 def _get_image_name():
-    return "{}:{}".format(DOCKER_REPOSITORY, _get_branch())
+    tag = _get_branch()
+    if tag == "master":
+        tag = "latest"
+
+    return "{}:{}".format(DOCKER_REPOSITORY, tag)
 
 
 @task

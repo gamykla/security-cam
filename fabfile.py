@@ -38,7 +38,7 @@ def run():
 
     env_vars = ' '.join('-e {}={}'.format(key, value) for key, value in secrets_json.iteritems())
 
-    docker_run_cmd = 'docker run -d {} -p 8080:8080 --name={} {}'.format(
+    docker_run_cmd = 'docker run -d {} -p 8080:80 --name={} {}'.format(
         env_vars,
         TEST_CONTAINER_NAME,
         _get_image_name())

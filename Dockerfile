@@ -1,10 +1,4 @@
-FROM alpine:3.4
-
-RUN apk add --no-cache python && \
-    python -m ensurepip && \
-    rm -r /usr/lib/python*/ensurepip && \
-    pip install --upgrade pip setuptools && \
-rm -r /root/.cache
+FROM python:2.7.12
 
 ADD requirements requirements
 RUN pip install -r requirements/base.txt
@@ -13,4 +7,4 @@ ADD security_cam security_cam
 
 EXPOSE 80
 
-ENTRYPOINT gunicorn --bind 0.0.0.0:80 --workers 6 --keep-alive 1 --timeout 30 security_cam.wsgi:app
+ENTRYPOINT gunicorn --bind 0.0.0.0:80 --workers 6 --keep-alive 1 --timeout 30 --worker-class gevent security_cam.wsgi:app

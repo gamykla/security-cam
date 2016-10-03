@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: camserver-deployment
+  name: camserver
 spec:
-  replicas: 4 # tells deployment to run 2 pods matching the template
+  replicas: 2
   template: # create pods using pod definition in this template
     metadata:
       # unlike pod-nginx.yaml, the name is not included in the meta data as a unique name is
@@ -31,10 +31,10 @@ spec:
         livenessProbe:
           httpGet:
             path: /health/
-            port: 8080
+            port: 80
           # length of time to wait for a pod to initialize
           # after pod startup, before applying health checking
           initialDelaySeconds: 20
           timeoutSeconds: 30
         ports:
-        - containerPort: 8080
+        - containerPort: 80

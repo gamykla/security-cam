@@ -1,7 +1,7 @@
 import json
 import os
 import time
-from fabric.api import task, local
+from fabric.api import task, local, warn_only
 
 DOCKER_REPOSITORY = "jelis/cam_server"
 TEST_CONTAINER_NAME = "cam_server"
@@ -62,7 +62,8 @@ def deploy_pods():
     fq_kube_config = os.path.join(fq_dir, kube_config_file)
     fq_descriptors_dir = os.path.join(fq_dir, descriptors_dir)
 
-    local('kubectl --kubeconfig={} delete deployment camserver'.format(fq_kube_config))
+    with warn_only():
+        local('kubectl --kubeconfig={} delete deployment camserver'.format(fq_kube_config))
     local('kubectl --kubeconfig={} create -f {}'.format(
         fq_kube_config, os.path.join(fq_descriptors_dir, 'deployment.yaml')))
     local('kubectl --kubeconfig={} get pods'.format(fq_kube_config))

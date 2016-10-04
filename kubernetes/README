@@ -1,0 +1,3 @@
+kubeconfig.json
+    must contain location of kubernetes configuraiton file called kubeconfig relative to the project root
+    must contain location of your deployment.yaml and service.yaml files. this is a directory relative to project root.

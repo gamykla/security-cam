@@ -29,6 +29,43 @@ def push():
     local('docker push {}'.format(_get_image_name()))
 
 
+def _get_kube_config():
+    fq_dir = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(fq_dir, "kubernetes/kubeconfig.json")) as f:
+        return json.loads(f.read())
+
+
+@task
+def deploy_service():
+    """ Deploy a kubernetes service for the camserver"""
+    fq_dir = os.path.dirname(os.path.abspath(__file__))
+    config = _get_kube_config()
+    kube_config_file = config['kubeConfig']
+    descriptors_dir = config['descriptorsLocation']
+    fq_descriptors_dir = os.path.join(fq_dir, descriptors_dir)
+    fq_kube_config = os.path.join(fq_dir, kube_config_file)
+
+    local('kubectl --kubeconfig={} create -f {}'.format(
+        fq_kube_config, os.path.join(fq_descriptors_dir, 'service.yaml')))
+
+
+@task
+def deploy_pods():
+    """ deploy kubernetes pods for the cam server"""
+    fq_dir = os.path.dirname(os.path.abspath(__file__))
+    config = _get_kube_config()
+    kube_config_file = config['kubeConfig']
+    descriptors_dir = config['descriptorsLocation']
+
+    fq_kube_config = os.path.join(fq_dir, kube_config_file)
+    fq_descriptors_dir = os.path.join(fq_dir, descriptors_dir)
+
+    local('kubectl --kubeconfig={} delete deployment camserver'.format(fq_kube_config))
+    local('kubectl --kubeconfig={} create -f {}'.format(
+        fq_kube_config, os.path.join(fq_descriptors_dir, 'deployment.yaml')))
+    local('kubectl --kubeconfig={} get pods'.format(fq_kube_config))
+
+
 @task
 def run():
     current_dir = os.path.dirname(os.path.abspath(__file__))

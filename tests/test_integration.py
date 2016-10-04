@@ -6,6 +6,12 @@ from requests.auth import HTTPBasicAuth
 from nose.tools import eq_
 
 
+def _get_server_base_url():
+    if 'SECURITYCAM_SERVER_BASE_URL' in os.environ:
+        return os.environ.get('SECURITYCAM_SERVER_BASE_URL')
+    return 'http://localhost:8080'
+
+
 def _get_secrets():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     secrets_file = os.path.join(current_dir, "..", "secrets.json")
@@ -14,8 +20,8 @@ def _get_secrets():
 
 
 def test_health_endpoint():
-    for _ in range(500):
-        response = requests.get("http://localhost:8080/health/")
+    for _ in range(10):
+        response = requests.get("{}/health/".format(_get_server_base_url()))
         eq_(httplib.OK, response.status_code)
 
 
@@ -32,11 +38,12 @@ def test_image_capture():
     data = {"image_data_b64": image_data_b64}
 
     response = requests.post(
-        "http://localhost:8080/captures/",
+        "{}/captures/".format(_get_server_base_url()),
         headers=headers,
         data=json.dumps(data),
         auth=HTTPBasicAuth(secrets['CLIENT_KEY'], secrets['CLIENT_SECRET']))
 
+    print response.content
     eq_(response.status_code, httplib.CREATED)
 
 
@@ -45,7 +52,7 @@ def test_no_auth_provided_is_unauthorized():
     data = {"image_data_b64": "10101"}
 
     response = requests.post(
-        "http://localhost:8080/captures/",
+        "{}/captures/".format(_get_server_base_url()),
         headers=headers,
         data=json.dumps(data))
 
@@ -57,7 +64,7 @@ def test_bad_credentials_is_unauthorized():
     data = {"image_data_b64": "10101"}
 
     response = requests.post(
-        "http://localhost:8080/captures/",
+        "{}/captures/".format(_get_server_base_url()),
         headers=headers,
         data=json.dumps(data),
         auth=HTTPBasicAuth("foo", "bar"))

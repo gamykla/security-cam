@@ -4,3 +4,6 @@ test/resources
 todo.txt
 test.py
 secrets.json
+kube-descriptors
+kubeconfig
+

@@ -3,7 +3,6 @@ import httplib
 import logging
 import sys
 import json
-import socket
 
 from flask import Flask
 from flask import request
@@ -28,11 +27,6 @@ app = Flask(__name__)
 
 
 config = configuration.Configuration()
-
-try:
-    print socket.gethostbyname('api.twitter.com')
-except:
-    logger.exception("fuck")
 
 try:
     img_store = twitter_handler.TwitterImageStore(

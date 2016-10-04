@@ -21,11 +21,13 @@ def _get_image_name():
 
 @task
 def build():
+    """ build docker image"""
     local('docker build -t {} .'.format(_get_image_name()))
 
 
 @task
 def push():
+    """ push docker image to docker hub"""
     local('docker push {}'.format(_get_image_name()))
 
 
@@ -68,6 +70,9 @@ def deploy_pods():
 
 @task
 def run():
+    """
+    Run with docker locally
+    """
     current_dir = os.path.dirname(os.path.abspath(__file__))
     secrets_file = os.path.join(current_dir, "secrets.json")
     with open(secrets_file, "r") as f:
@@ -89,6 +94,7 @@ def _rm_container(container_id):
 
 @task
 def stop(remove_container=True):
+    """ Stop local docker container"""
     container_id = local('docker ps --filter "name={}" -aq'.format(TEST_CONTAINER_NAME), capture=True)
     local('docker stop {}'.format(container_id))
     if remove_container:

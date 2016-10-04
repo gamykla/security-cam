@@ -34,3 +34,10 @@ kubectl create -f kubernetes/service.yaml
 curl -v -X POST https://cams.mydomain.com/captures/
 ```
 You should get an HTTP 401 Unauthorized response.
+
+Alternativaly once the cluster is setup, you can just do:
+```
+fab deploy_service
+fab deploy_pods
+```
+in order to setup the kube service and the pods.

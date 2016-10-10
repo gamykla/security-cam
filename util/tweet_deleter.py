@@ -41,9 +41,7 @@ class TwitterStatusDeleter(object):
                 logger.info("Deleted {} tweets..".format(self.deleted_count))
 
 if __name__ == "__main__":
-    logging.basicConfig()
     if len(sys.argv) != 5:
         raise RuntimeError(
             "Arguments not provided: consumer_key, consumer_secret, access_token_key, access_token_secret")
-    sd = TwitterStatusDeleter(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
-    sd.do_it()
+    TwitterStatusDeleter(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]).do_it()
